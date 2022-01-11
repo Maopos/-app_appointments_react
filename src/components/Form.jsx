@@ -1,11 +1,20 @@
 import React, { useState, useEffect } from "react";
+import Error from "./Error";
 
-const Form = () => {
+const Form = ({ patients, setPatients }) => {
   const [name, setname] = useState("");
   const [owner, setOwner] = useState("");
   const [email, setEmail] = useState("");
   const [date, setDate] = useState("");
   const [symptoms, setSymptoms] = useState("");
+
+  const [error, setError] = useState(false);
+
+  const generateId = () => {
+    const random = Math.random().toString(36).substring(2);
+    const dateNow = Date.now().toString(36);
+    return random + dateNow;
+  };
 
   const onChangeName = (e) => {
     setname(e.target.value);
@@ -25,6 +34,30 @@ const Form = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if ([name, owner, email, date, symptoms].includes("")) {
+      setError(true);
+      setTimeout(() => {
+        setError(false);
+      }, 1500);
+      return;
+    }
+
+    const newPatient = {
+      name,
+      owner,
+      email,
+      date,
+      symptoms,
+      id: generateId(),
+    };
+
+    setPatients([...patients, newPatient]);
+
+    setname("");
+    setOwner("");
+    setEmail("");
+    setDate("");
+    setSymptoms("");
   };
 
   return (
@@ -40,6 +73,7 @@ const Form = () => {
         action=""
         className="bg-white shadow-md rounded py-10 px-5 mb-10"
       >
+        {error && <Error msg="All fields are required..." />}
         <div className="mb-4">
           <label
             htmlFor="name"
