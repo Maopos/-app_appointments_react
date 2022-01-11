@@ -1,14 +1,14 @@
 import Header from "./components/Header";
-import Formulario from "./components/Formulario";
-import ListadoPacientes from "./components/ListadoPacientes";
+import Form from "./components/Form";
+import List from "./components/List";
 
 function App() {
   return (
-    <div className="container mx-auto mt-10">
+    <div className="container mx-auto mt-5">
       <Header />
-      <div className="mt-12 mx-8 md:flex">
-        <Formulario />
-        <ListadoPacientes />
+      <div className="mt-5 mx-8 md:flex">
+        <Form />
+        <List />
       </div>
     </div>
   );
