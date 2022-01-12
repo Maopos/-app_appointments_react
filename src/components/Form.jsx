@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Error from "./Error";
 
-const Form = ({ patients, setPatients }) => {
+const Form = ({ patients, setPatients, patient, setPatient }) => {
   const [name, setname] = useState("");
   const [owner, setOwner] = useState("");
   const [email, setEmail] = useState("");
@@ -9,6 +9,16 @@ const Form = ({ patients, setPatients }) => {
   const [symptoms, setSymptoms] = useState("");
 
   const [error, setError] = useState(false);
+
+  useEffect(() => {
+    if (Object.keys(patient).length > 0) {
+      setname(patient.name);
+      setOwner(patient.owner);
+      setEmail(patient.email);
+      setDate(patient.date);
+      setSymptoms(patient.symptoms);
+    }
+  }, [patient]);
 
   const generateId = () => {
     const random = Math.random().toString(36).substring(2);
@@ -48,11 +58,24 @@ const Form = ({ patients, setPatients }) => {
       email,
       date,
       symptoms,
-      id: generateId(),
     };
 
-    setPatients([...patients, newPatient]);
+    if (patient.id) {
+      // Editando
+      newPatient.id = patient.id;
+      const updatedPatients = patients.map((i) =>
+        i.id === patient.id ? newPatient : i
+      );
 
+      setPatients(updatedPatients);
+      setPatient({});
+    } else {
+      // Creando registro
+      newPatient.id = generateId();
+      setPatients([...patients, newPatient]);
+    }
+
+    // Reiniciar
     setname("");
     setOwner("");
     setEmail("");
@@ -155,8 +178,12 @@ const Form = ({ patients, setPatients }) => {
         </div>
         <input
           type="submit"
-          className="bg-green-700 rounded text-center text-white font-semibold w-full p-2 hover:bg-green-800 cursor-pointer transition-all"
-          value="Save"
+          className={
+            patient.id
+              ? "bg-yellow-500  rounded text-center w-full p-2 hover:bg-yellow-400 cursor-pointer transition-all"
+              : "bg-green-700  rounded text-center text-white font-semibold w-full p-2 hover:bg-green-800 cursor-pointer transition-all"
+          }
+          value={patient.id ? "Edit Patient" : "Save"}
         />
       </form>
     </div>

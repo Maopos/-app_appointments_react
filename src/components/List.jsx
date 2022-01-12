@@ -1,6 +1,6 @@
 import Patient from "./Patient";
 
-const List = ({ patients }) => {
+const List = ({ patients, setPatient, deletePatient }) => {
   return (
     <div className="md:w-1/2 lg:w-3/5 md:h-screen overflow-y-scroll">
       <h2 className="font-semibold text-3xl text-center">
@@ -13,7 +13,14 @@ const List = ({ patients }) => {
         </span>
       </p>
       {patients.map((i) => {
-        return <Patient key={i.id} patient={i} />;
+        return (
+          <Patient
+            key={i.id}
+            patient={i}
+            setPatient={setPatient}
+            deletePatient={deletePatient}
+          />
+        );
       })}
     </div>
   );

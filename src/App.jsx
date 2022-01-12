@@ -5,13 +5,29 @@ import List from "./components/List";
 
 function App() {
   const [patients, setPatients] = useState([]);
+  const [patient, setPatient] = useState({});
+
+  const deletePatient = (id) => {
+    const updatePatients = patients.filter((i) => i.id !== id);
+
+    setPatients(updatePatients);
+  };
 
   return (
     <div className="container mx-auto mt-5">
       <Header />
       <div className="mt-5 mx-8 md:flex">
-        <Form patients={patients} setPatients={setPatients} />
-        <List patients={patients} />
+        <Form
+          patients={patients}
+          setPatients={setPatients}
+          patient={patient}
+          setPatient={setPatient}
+        />
+        <List
+          patients={patients}
+          setPatient={setPatient}
+          deletePatient={deletePatient}
+        />
       </div>
     </div>
   );
